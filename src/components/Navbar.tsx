@@ -29,7 +29,6 @@ export default function Navbar({settings} : NavbarProps) {
                                 </ButtonLink>
                             )
                         }
-
                         return(
                         <li key={item.label}>
                             <PrismicNextLink field={item.link} className="inline-flex min-h-11 items-center">{item.label}</PrismicNextLink>

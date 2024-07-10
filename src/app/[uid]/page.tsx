@@ -6,8 +6,10 @@ import * as prismic from "@prismicio/client";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
+import { PiGear } from "react-icons/pi";
 
 type Params = { uid: string };
+
 
 /**
  * This page renders a Prismic Document dynamically based on the URL.

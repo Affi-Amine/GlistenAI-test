@@ -1,16 +1,105 @@
 "use client"
+
+import gsap from 'gsap'
+import { useGSAP } from "@gsap/react"
+import usePrefersReducedMotion  from "@/hooks/usePrefersReducedMotion"
 import React, { useRef, useEffect } from 'react';
 
 export default function StarGrid() {
-  const container = useRef<SVGSVGElement>(null);
+
+  const container = useRef(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
+  gsap.registerPlugin(useGSAP);
+
   const grid = [14, 30] as const;
 
-  useEffect(() => {
-    if (container.current) {
-      container.current.style.opacity = '1'; // Set initial opacity or any other logic you need
-    }
-  }, []);
+  useGSAP(() => {
+    gsap.set(".star-grid-item", {
+      opacity: 0,
+      transformOrigin: "center",
+      color: "#fff"
+    }) //at first we need the elements to be hidden until they are loaded
 
+    gsap.set(container.current, {opacity: 1}) //then we return the opacity to normal
+
+    const tl = gsap.timeline()
+
+    // Entrance animation 
+    tl.to(".star-grid-item", {
+      keyframes: [
+        {
+          opacity: 0,
+          duration: 0
+        },
+        {
+          opacity: 0.4, 
+          rotate: "+=180",
+          color: "#ffd057",
+          scale: 3, 
+          duration: 0.6,
+          stagger: {
+            amount: 2, //the time the whole animates of the grid takes
+            grid: grid,
+            from: "center"
+          }
+        },
+        {
+          opacity: 0.2, 
+          rotate: "+=180",
+          color: "#fff",
+          scale: 2,
+          delay: -2, 
+          duration: 0.6,
+          stagger: {
+            amount: 3, //the time the whole animates of the grid takes
+            grid: grid,
+            from: "center"
+          }
+        }
+      ]
+    }
+  )
+
+  // Loop Animation
+  tl.to(".star-grid-item", {
+    
+    delay: 5,
+    repeat: -1,
+    repeatDelay: 5,
+
+    keyframes: [
+      {
+        opacity: 0.4, 
+        rotate: "+=180",
+        color: "#ffd057",
+        scale: 3, 
+        duration: 0.6,
+        stagger: {
+          amount: 2, //the time the whole animates of the grid takes
+          grid: grid,
+          from: "center"
+        }
+      },
+      {
+        opacity: 0.2, 
+        rotate: "+=180",
+        color: "#fff",
+        scale: 2,
+        delay: -2, 
+        duration: 0.6,
+        stagger: {
+          amount: 3, //the time the whole animates of the grid takes
+          grid: grid,
+          from: "center"
+        }
+      }
+    ]
+  }
+)
+  }, {scope: container})
+
+  // Loop Animation 
+  
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
